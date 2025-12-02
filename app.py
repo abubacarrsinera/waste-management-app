@@ -267,3 +267,6 @@ def delete_report_file(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     if os.path.exists(path):
         os.remove(path)
+
+if __name__ == "__main__":
+    app.run()
