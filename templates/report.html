@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Report Waste</h2>
+  <form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Type of waste</label>
+      <input class="form-control" name="waste_type" placeholder="e.g. Plastic, Organic, Electronic">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" name="description" rows="3" placeholder="Short details"></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Image (optional)</label>
+      <input class="form-control" type="file" name="image" accept="image/*">
+      <div class="form-text">Max size 5MB. Allowed: png, jpg, jpeg, gif.</div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Latitude (optional)</label>
+        <input class="form-control" name="lat" id="lat" placeholder="e.g. 13.45000">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Longitude (optional)</label>
+        <input class="form-control" name="lng" id="lng" placeholder="e.g. -16.67890">
+      </div>
+    </div>
+
+    <button class="btn btn-success">Submit Report</button>
+    <button type="button" class="btn btn-secondary" id="useLocation">Use my location</button>
+  </form>
+
+  <script>
+    document.getElementById('useLocation').addEventListener('click', function(){
+      if (!navigator.geolocation) {
+        alert("Geolocation not supported by your browser.");
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(function(pos){
+        document.getElementById('lat').value = pos.coords.latitude.toFixed(6);
+        document.getElementById('lng').value = pos.coords.longitude.toFixed(6);
+      }, function(err){
+        alert("Could not get location: " + err.message);
+      });
+    });
+  </script>
+{% endblock %}

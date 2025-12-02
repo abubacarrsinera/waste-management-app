@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>All Reports</h2>
+  {% if reports %}
+    <div class="list-group">
+      {% for r in reports %}
+        <div class="list-group-item mb-2">
+          <strong>#{{ r.id }}</strong> — <em>{{ r.waste_type or 'Unknown' }}</em> by <strong>{{ r.reporter or 'Anonymous' }}</strong>
+          <div>{{ r.description }}</div>
+          <div><small>Status: {{ r.status }} — {{ r.created_at }}</small></div>
+          {% if r.image %}
+            <div class="mt-2">
+              <img src="{{ url_for('uploaded_file', filename=r.image) }}" style="max-width:200px;">
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No reports yet.</p>
+  {% endif %}
+{% endblock %}

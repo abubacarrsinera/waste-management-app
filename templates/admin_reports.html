@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Admin — All Reports</h2>
+
+{% if reports %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Reporter</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reports %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.reporter or 'Anonymous' }}</td>
+            <td>{{ r.waste_type }}</td>
+            <td>{{ r.description[:80] }}</td>
+            <td>
+                {% if r.image %}
+                <img src="{{ url_for('uploaded_file', filename=r.image) }}" style="max-width:100px;">
+                {% endif %}
+            </td>
+            <td>{{ r.status }}</td>
+            <td>
+                <form method="post" style="display:inline-block">
+                    <input type="hidden" name="report_id" value="{{ r.id }}">
+                    <select name="new_status" class="form-select form-select-sm mb-1">
+                        <option value="pending" {% if r.status=='pending' %}selected{% endif %}>pending</option>
+                        <option value="in_progress" {% if r.status=='in_progress' %}selected{% endif %}>in_progress
+                        </option>
+                        <option value="completed" {% if r.status=='completed' %}selected{% endif %}>completed</option>
+                    </select>
+                    <button class="btn btn-sm btn-primary">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No reports yet.</p>
+{% endif %}
+{% endblock %}
